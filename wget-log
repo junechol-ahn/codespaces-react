@@ -1,0 +1,6 @@
+--2025-08-06 02:12:34--  https://att-c.udemycdn.com/2024-04-19_02-57-43-de423aa9a4cc6e13b117ac72d372f3ae/original.zip?response-content-disposition=attachment%3B+filename%3DRedux%2BResources%2B2024.zip
+Resolving att-c.udemycdn.com (att-c.udemycdn.com)... 3.165.75.35, 3.165.75.41, 3.165.75.72, ...
+Connecting to att-c.udemycdn.com (att-c.udemycdn.com)|3.165.75.35|:443... connected.
+HTTP request sent, awaiting response... 403 Forbidden
+2025-08-06 02:12:34 ERROR 403: Forbidden.
+
