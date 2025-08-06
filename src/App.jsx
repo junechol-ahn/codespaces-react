@@ -1,9 +1,10 @@
 import './App.css';
-import { addTask, removeTask, completeTask } from './store/tasks';
+import { fetchTasks, getTasks, addTask, removeTask, completeTask } from './store/tasks';
 import { addEmployee, removeEmployee } from './store/employees';
 import store from './store/configureStore';
 import { LoremIpsum } from 'lorem-ipsum';
 import axios from 'axios';
+
 
 const lorem = new LoremIpsum({
   sentencesPerParagraph: {
@@ -55,9 +56,19 @@ const handleTestErrorLogger = () => {
   store.dispatch( {type: 'SHOW_ERROR', payload: {error: 'Server Error'}})
 }
 
-const gettingTasks = async () => {
-  const response = await axios.get('https://bug-free-chainsaw-x9jrg7wgqrw36g7-5000.app.github.dev/api/tasks')
-  console.log(response)
+// const gettingTasks = async () => {
+//   try {
+//     const response = await axios.get('http://localhost:5000/api/tasks')
+//     console.log(response)
+  
+//     store.dispatch( getTasks({tasks: response.data}) ) 
+//   } catch (error) {
+//     store.dispatch({type: 'SHOW_ERROR', payload: {error: error.message}})
+//   }
+// }
+
+const handleFetchTasks = () => {
+  store.dispatch(fetchTasks())
 }
 
 function App() {
@@ -103,7 +114,10 @@ function App() {
       </div>
       <div className="spacer"></div>
       <div>
-        <button onClick={gettingTasks}>API: get</button>
+        <button onClick={()=>{}}>API: get</button>
+      </div>
+            <div>
+        <button onClick={handleFetchTasks}>API: fetchTasks</button>
       </div>
     </div>
   );

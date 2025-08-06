@@ -1,34 +1,68 @@
-import { createSlice } from "@reduxjs/toolkit";
-
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 let id = 0
+const initialState = {
+    tasks: [],
+    loading: false,
+    error: null
+}
+
+export const fetchTasks = createAsyncThunk('fetchTasks', async (_, {rejectWithValue})=>{
+    try {
+        const response = await axios.get('http://localhost:5000/api/taskss')
+        return {tasks: response.data}
+    } catch (error) {
+        return rejectWithValue({error: error.message})
+    }
+})
 
 const taskSlice = createSlice({
     name: 'tasks',
-    initialState: [],
+    initialState,
     reducers: {
+        getTasks: (state, action) => {
+            state.tasks = action.payload.tasks
+        },
         addTask: (state,action) => {
-            state.push({
+            state.tasks.push({
                 id: ++id,
                 task: action.payload.task,
                 completed: false
             })
         },
         removeTask: (state, action) => {
-            const index = state.findIndex(item => item.id === action.payload.id)
+            const index = state.tasks.findIndex(item => item.id === action.payload.id)
             if (index >= 0) {
-                state.splice(index, 1)
+                state.tasks.splice(index, 1)
             }
         },
         completeTask: (state, action) => {
-            const index = state.findIndex(item => item.id === action.payload.id)
+            const index = state.tasks.findIndex(item => item.id === action.payload.id)
             if (index >= 0) {
-                state[index].completed = true
+                state.tasks[index].completed = true
             }
         }
+    },
+    extraReducers: (builder) => {
+        builder
+        .addCase(
+            fetchTasks.pending, (state, action) => {
+                state.loading = true
+            })
+        .addCase(
+            fetchTasks.fulfilled, (state, action) => {
+                state.tasks = action.payload.tasks
+                state.loading = false
+            })
+        .addCase(
+            fetchTasks.rejected, (state, action) => {
+                state.loading = false
+                state.error = action.payload.error
+            })
     }
 })
 
-export const {addTask, removeTask, completeTask} = taskSlice.actions
+export const { getTasks, addTask, removeTask, completeTask} = taskSlice.actions
 export default taskSlice.reducer
 
 
